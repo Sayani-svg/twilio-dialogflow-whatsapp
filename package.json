@@ -15,3 +15,20 @@
     "twilio": "^3.53.0"
   }
 }
+  "name": "sheaccess-webhook",
+"version": "1.0.0",
+"main": "index.js",
+"scripts": {
+  "start": "node index.js"
+},
+"keywords": [],
+"author": "",
+"license": "ISC",
+"description": "",
+"dependencies": {
+  "body-parser": "^2.2.0",
+  "dotenv": "^17.2.0",
+  "express": "^5.1.0",
+  "twilio": "^5.7.3"
+}
+}

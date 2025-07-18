@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(express.json());
 
-app.post('/whatsapp', async function(req, res) {
+app.post('/whatsapp', async function (req, res) {
 
 	const from = req.body.From;
 	const to = req.body.To;
@@ -40,10 +40,10 @@ app.post('/whatsapp', async function(req, res) {
 
 
 	// handle emi due date action
-	if(response[0].queryResult.action == 'emi.due-date') {
+	if (response[0].queryResult.action == 'emi.due-date') {
 		let dueDate = new Date();
-		dueDate.setTime(dueDate.getTime() + 5*24*60*60*1000);
-		
+		dueDate.setTime(dueDate.getTime() + 5 * 24 * 60 * 60 * 1000);
+
 		let dueAmount = "$200";
 
 		await twilioClient.messages.create({
@@ -66,7 +66,7 @@ app.post('/whatsapp', async function(req, res) {
 	for (const message of messages) {
 
 		// normal text message
-		if(message.text) {
+		if (message.text) {
 			await twilioClient.messages.create({
 				from: to,
 				to: from,
@@ -75,15 +75,15 @@ app.post('/whatsapp', async function(req, res) {
 		}
 
 		// response payload
-		if(message.payload) {
+		if (message.payload) {
 			let url = '';
 			let text = '';
 
-			if(message.payload.fields.media_url) {
-				url = message.payload.fields.media_url.stringValue;	
+			if (message.payload.fields.media_url) {
+				url = message.payload.fields.media_url.stringValue;
 			}
 
-			if(messages.payload.fields.text) {
+			if (messages.payload.fields.text) {
 				text = message.payload.fields.text.stringValue
 			}
 
@@ -101,4 +101,39 @@ app.post('/whatsapp', async function(req, res) {
 
 app.listen(PORT, () => {
 	console.log(`Listening on ${PORT}`);
+});
+const express = require('express');
+const bodyParser = require('body-parser');
+const { MessagingResponse } = require('twilio').twiml;
+require('dotenv').config();
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.post('/webhook', (req, res) => {
+	const twiml = new MessagingResponse();
+
+	const incomingMsg = req.body.Body?.toLowerCase();
+
+	if (incomingMsg.includes('help')) {
+		twiml.message('🆘 How can I assist you? Type EMERGENCY to send alerts.');
+	} else if (incomingMsg.includes('emergency')) {
+		twiml.message('🚨 Emergency detected! Notifying contacts...');
+		// Future logic to notify or call Dialogflow can go here
+	} else {
+		twiml.message("👋 Welcome to SheAccess+. Type 'help' to begin.");
+	}
+
+	res.writeHead(200, { 'Content-Type': 'text/xml' });
+	res.end(twiml.toString());
+});
+
+app.get('/', (req, res) => {
+	res.send('SheAccess+ Webhook Running');
+});
+
+app.listen(port, () => {
+	console.log(`Server listening on port ${port}`);
 });

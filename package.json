@@ -1,9 +1,10 @@
 {
-  "name": "twilio-whatsapp",
+  "name": "sheaccess-webhook",
   "version": "1.0.0",
-  "description": "integrate twilio with whatsapp",
+  "description": "Integrate Twilio with WhatsApp",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -14,21 +15,4 @@
     "express": "^4.17.1",
     "twilio": "^3.53.0"
   }
-}
-  "name": "sheaccess-webhook",
-"version": "1.0.0",
-"main": "index.js",
-"scripts": {
-  "start": "node index.js"
-},
-"keywords": [],
-"author": "",
-"license": "ISC",
-"description": "",
-"dependencies": {
-  "body-parser": "^2.2.0",
-  "dotenv": "^17.2.0",
-  "express": "^5.1.0",
-  "twilio": "^5.7.3"
-}
 }

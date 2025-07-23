@@ -17,9 +17,10 @@ app.use(express.json());
 // Dialogflow client setup
 const sessionClient = new dialogflow.SessionsClient({
 	credentials: {
-		private_key: CREDENTIALS['private_key'],
-		client_email: CREDENTIALS['client_email']
-	}
+		private_key: process.env.DIALOGFLOW_PRIVATE_KEY.replace(/\\n/g, '\n'),
+		client_email: process.env.DIALOGFLOW_CLIENT_EMAIL,
+	},
+	projectId: process.env.PROJECT_ID,
 });
 
 app.get('/', (req, res) => {
